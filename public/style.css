@@ -1,0 +1,116 @@
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  min-height: 100vh;
+  font-size: 2em;
+  background-color: #1A1A1A;
+  background-image: url('img/background.png');
+  margin-right: 2em;
+}
+
+section {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+input,
+button {
+  font-size: large;
+}
+
+
+
+#questions {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5em 0.5em 0.5em 0.5em;
+}
+
+#questionsList {
+  padding: 0.5em 2em 0em 0.5em;
+  margin-bottom: 0.5em;
+  border: thin solid white;
+  border-radius: 0.2em;
+  flex-grow: 1;
+  overflow: scroll;
+}
+
+#questionsList li {
+  margin-bottom: 0.5em;
+  padding: 0.4em 0.2em;
+  border-radius: 0.2em;
+  border: thin solid #ca9752;
+  cursor: pointer;
+}
+
+#questionsList .tag {
+  color: #ca9752;
+}
+
+#questionsList .tag::before {
+  content: '@';
+}
+
+#questionsList .tag::after {
+  content: ' : ';
+}
+
+#questionsList .content {
+  color: white;
+}
+
+#questionsList .active {
+  background: url('img/highlight.png');
+}
+
+#questionsList .active .tag {
+  color: black;
+}
+
+#addquestion {
+  display: flex;
+  height: 1.5em;
+}
+
+#addquestion #tag {
+  width: 10em;
+}
+
+#addquestion #content {
+  flex-grow: 1;
+  margin: 0 1em;
+}
+
+#addquestion button {
+  background: none;
+  border: none;
+  color: #ca9752;
+  margin:0px;
+  padding:0px;
+}
+
+#actionsList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+#actionsList li {
+  padding: 0.4em 0.2em;
+  border-radius: 0.2em;
+  border: thin solid #ca9752;
+  cursor: pointer;
+  color:white;
+  transition: all 1s;
+
+}
+
+
+#actionsList .active {
+  background: #ca9752;
+  color: black;
+  transition: all 0s;
+}

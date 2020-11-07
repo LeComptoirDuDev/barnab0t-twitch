@@ -1,0 +1,24 @@
+[
+  {
+    "actionName": "discord",
+    "messages": [
+      "Rejoignez-nous sur discord pour discuter avec les présentateurs !",
+      "👉 comptoirdudev.fr/discord"
+    ]
+  }, 
+  {
+    "actionName": "consigne-question",
+    "messages": [
+      "Vous voulez poser une question ? Facile ! Tapez \"?\" suivi de votre question !"
+    ]
+  },
+  {
+    "actionName": "réseaux",
+    "messages": [
+      "Followez Nous ! 🐦 twitter.com/comptoirdudev_",
+      "Suivez Nous ! 📸 instagram.com/comptoirdudev_",
+      "Pour les replays ! ▶ comptoirdudev.fr/youtube",
+      "La communauté ! 🖐 comptoirdudev.fr/discord "
+    ]
+  }
+]

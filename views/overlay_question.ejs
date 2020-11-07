@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Question Overlay</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Arvo', 'Courier New', Courier, monospace;
+        font-size: 3em;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+      }
+
+      .top {
+        justify-content: flex-start;
+      }
+
+      .center {
+        justify-content: center;
+      }
+
+      .bottom {
+        justify-content: flex-end;
+      }
+
+      .main {
+        background: url('/img/background.png');
+        padding: 0.5em;
+        border: 0.1em solid #ca9752;
+        opacity: 1;
+        transition: all 200ms;
+      }
+
+      .hidden {
+        opacity: 0;
+        transition: all 200ms;
+      }
+
+      #content {
+        color: white;
+      }
+
+      #tag {
+        color: #ca9752;
+      }
+
+      #tag::after {
+        padding-left: 0.15em;
+        content: ':';
+      }
+
+      #tag::before {
+        padding-left: 0.15em;
+        content: '@';
+      }
+    </style>
+  </head>
+  <body class="<%= position %>">
+    <div class="main hidden">
+      <span id="tag"></span>
+      <span id="content"> </span>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+      const socket = io('');
+      const main = document.querySelector('.main');
+      const tag = document.querySelector('#tag');
+      const content = document.querySelector('#content');
+
+      socket.on('UpdateQuestionActive', (question) => {
+        setVisible(false).then(() => {
+          if (question.id === -1) return;
+          updateDOM(question);
+          setVisible(true);
+        });
+      });
+
+      function setVisible(isVisible) {
+        return new Promise((resolve, reject) => {
+          if (isVisible) main.classList.remove('hidden');
+          else main.classList.add('hidden');
+
+          setTimeout(() => resolve(), 200);
+        });
+      }
+
+      function updateDOM(question) {
+        tag.innerHTML = question.author;
+        content.innerHTML = question.content;
+      }
+    </script>
+  </body>
+</html>

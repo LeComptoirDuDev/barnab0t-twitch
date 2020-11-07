@@ -1,0 +1,13 @@
+{
+  "server": {
+    "address": "localhost",
+    "port": 4445
+  },
+  "botTwitch": {
+    "botname": "Barnab0t",
+    "oauth": "oauth:unfi07kb354dt6dp88l60j6zfa7kdo",
+    "channels": ["sylvaintech"],
+    "endWords": ["Bip.", "Bip!", "Bip", "DONE.", ";", "ACK"],
+    "debug": true
+  }
+}
