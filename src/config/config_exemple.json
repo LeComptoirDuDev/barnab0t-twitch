@@ -5,8 +5,8 @@
   },
   "botTwitch": {
     "botname": "Barnab0t",
-    "oauth": "oauth:unfi07kb354dt6dp88l60j6zfa7kdo",
-    "channels": ["sylvaintech"],
+    "oauth": "oauth:laChaineOauthAFournir",
+    "channels": ["laChaineTwitchAEcouter"],
     "endWords": ["Bip.", "Bip!", "Bip", "DONE.", ";", "ACK"],
     "debug": true
   }
