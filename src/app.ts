@@ -3,32 +3,35 @@ import SocketsHolder from './SocketsHolder';
 import QuestionsList from './QuestionsList';
 import { Question } from './models/Question.model';
 import config from './config/config.json';
-import Bot from './Bot';
+import BotTwitch from './BotTwitch';
+import { Request, Response } from 'express';
+import { CommandDispatcher } from './models/CommandDispatcher';
+import { Command } from './models/Command';
+import { IMessageDisplay } from './models/IMessageDisplay';
 
 const serveur = new Server(config.server.port);
 const io = SocketsHolder.getInstance(serveur.http);
-const bot = new Bot(config.botTwitch);
 
 
-serveur.addRouteGet('/actions', (req, res) => {
-  res.send(JSON.stringify(bot.getActions().map(a => a.actionName)));
-});
+// serveur.addRouteGet('/actions', (req: Request, res: Response) => {
+//   res.send(JSON.stringify(bot.getActions().map(a => a.actionName)));
+// });
 
-serveur.addRouteGet('/overlay-question/:position?', (req, res) => {
+serveur.addRouteGet('/overlay-question/:position?', (req: Request, res: Response) => {
   res.render('overlay_question.ejs', {
     position: req.params.position || 'bottom',
   });
 });
 
-serveur.addRouteGet('/flush', (req, res) => {
+serveur.addRouteGet('/flush', (req: Request, res: Response) => {
   QuestionsList.flush();
   res.send('done.');
 });
 
-serveur.addRouteGet('/action/:actionName', (req, res) => {
-  bot.doAction(req.params.actionName);
-  res.send('done.');
-});
+// serveur.addRouteGet('/action/:actionName', (req: Request, res: Response) => {
+//   bot.doAction(req.params.actionName);
+//   res.send('done.');
+// });
 
 io.onConnection((socket) => {
   socket.emit('UpdateListeQuestion', QuestionsList.getQuestionsList());
@@ -54,22 +57,74 @@ QuestionsList.subscribeActive((question) => {
   io.emit('UpdateQuestionActive', question);
 });
 
+
+
+/// Register commands for twitch
+
+const botTwitch = new BotTwitch(config.botTwitch);
+
+
+const commandDispatcherTwitch = new CommandDispatcher(botTwitch, "!");
+
+
+
+const commandCoucou = new Command("coucou", "", (messageDisplay) => {
+  messageDisplay.displayMessage("Hey mais salut toi !")
+});
+
+const commandDiscord = new Command("discord", "donne le lien vers discord", (messageDisplay) => {
+  messageDisplay.displayMessage(`https://comptoirdudev.fr/discord
+  Rejoignez nous !`)
+});
+
+const commandHelp = new Command("help", "Affiche les commandes disponibles", (messageDisplay) => {
+  let message = commandDispatcherTwitch
+    .commandList
+    .filter(command => command.description)
+    .reduce((acc, command) => {
+      return acc += `!${command.name} - ${command.description}\n`
+    }, "Liste des commandes : \n")
+
+  messageDisplay.displayMessage(message);
+})
+
+commandDispatcherTwitch.add(commandCoucou);
+commandDispatcherTwitch.add(commandDiscord);
+commandDispatcherTwitch.add(commandHelp);
+
+botTwitch.startListening(commandDispatcherTwitch);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /// Events from twitch bot
 
-bot.onMessageReceived(
-  (message) => message.startsWith('?'),
-  (message, tags, channel) => {
-    QuestionsList.addQuestion({
-      author: tags['display-name'],
-      content: message.substring(1),
-    });
-    bot.sendMessage(
-      channel,
-      `@${tags['display-name']} Question prise en compte`, 
-      true
-    );
-  }
-);
+// bot.onMessageReceived(
+//   (message) => message.startsWith('?'),
+//   (message, tags, channel) => {
+// QuestionsList.addQuestion({
+//   author: tags['display-name'],
+//   content: message.substring(1),
+// });
+//     bot.sendMessage(
+//       channel,
+//       `@${tags['display-name']} Question prise en compte`,
+//       true
+//     );
+//   }
+// );
+
+
 
 /// Start server and enjoy !
 
