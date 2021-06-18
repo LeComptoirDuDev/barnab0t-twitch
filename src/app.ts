@@ -77,6 +77,13 @@ const commandDiscord = new Command("discord", "donne le lien vers discord", (mes
   Rejoignez nous !`)
 });
 
+const commandSocials = new Command("socials", "liste des réseaux sociaux", (messageDisplay) => {
+  messageDisplay.displayMessage(`Followez Nous ! 🐦 twitter.com/comptoirdudev_
+  Suivez Nous ! 🤝 https://www.linkedin.com/company/le-comptoir-du-dev
+  Pour les replays ! ▶ comptoirdudev.fr/youtube
+  La communauté ! 🖐 comptoirdudev.fr/discord`)
+});
+
 const commandHelp = new Command("help", "Affiche les commandes disponibles", (messageDisplay) => {
   let message = commandDispatcherTwitch
     .commandList
@@ -91,6 +98,7 @@ const commandHelp = new Command("help", "Affiche les commandes disponibles", (me
 commandDispatcherTwitch.add(commandCoucou);
 commandDispatcherTwitch.add(commandDiscord);
 commandDispatcherTwitch.add(commandHelp);
+commandDispatcherTwitch.add(commandSocials);
 
 botTwitch.startListening(commandDispatcherTwitch);
 
