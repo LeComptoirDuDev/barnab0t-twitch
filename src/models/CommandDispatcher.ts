@@ -24,7 +24,7 @@ export class CommandDispatcher {
         if (this.commands.has(command.name)) {
             throw "Commande existante";
         }
-        this.commands.set(command.name, command);
+        this.commands.set(this.normalizeCommandName(command.name), command);
     }
 
     public handleMessage(message: string) {
@@ -38,11 +38,17 @@ export class CommandDispatcher {
     }
 
     private execute(commandName: string) {
-        if (!this.commands.has(commandName)) {
+        const normalizedCommandName = this.normalizeCommandName(commandName);
+
+        if (!this.commands.has(normalizedCommandName)) {
             return;
         }
 
-        this.commands.get(commandName)?.action(this.messageDisplay);
+        this.commands.get(normalizedCommandName)?.action(this.messageDisplay);
+    }
+
+    private normalizeCommandName(commandName: string) {
+        return commandName.toLowerCase();
     }
 
     private extractCommandName(message: string) {

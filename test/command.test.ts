@@ -117,6 +117,12 @@ describe('Command Dispatcher with prefix', () => {
         expect(action1Result).toBe(1);
     })
 
+    it('should execute Command with different case', () => {
+        dispatcher.add(command1);
+        dispatcher.handleMessage(PREFIX + command1.name.toUpperCase());
+        expect(action1Result).toBe(1);
+    })
+
 
 
 

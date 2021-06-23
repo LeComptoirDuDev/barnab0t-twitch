@@ -84,6 +84,10 @@ const commandSocials = new Command("socials", "liste des réseaux sociaux", (mes
   La communauté ! 🖐 comptoirdudev.fr/discord`)
 });
 
+const commandGithub = new Command("github", "obtenir le lien vers le github du Comptoir du dev_", (messageDisplay) => {
+  messageDisplay.displayMessage("https://github.com/LeComptoirDuDev")
+});
+
 const commandHelp = new Command("help", "Affiche les commandes disponibles", (messageDisplay) => {
   let message = commandDispatcherTwitch
     .commandList
@@ -99,6 +103,7 @@ commandDispatcherTwitch.add(commandCoucou);
 commandDispatcherTwitch.add(commandDiscord);
 commandDispatcherTwitch.add(commandHelp);
 commandDispatcherTwitch.add(commandSocials);
+commandDispatcherTwitch.add(commandGithub);
 
 botTwitch.startListening(commandDispatcherTwitch);
 
