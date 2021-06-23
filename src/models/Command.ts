@@ -1,4 +1,4 @@
-import { IMessageDisplay } from "./IMessageDisplay";
+import { ImessageDisplayer } from "./ImessageDisplayer";
 
 export class Command {
 
@@ -9,7 +9,7 @@ export class Command {
     constructor(
         name: string,
         description: string,
-        action: (messageDisplay: IMessageDisplay) => void,
+        action: (messageDisplayer: ImessageDisplayer) => void,
     ) {
         this.name = name;
         this.action = action;

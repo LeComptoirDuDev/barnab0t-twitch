@@ -2,7 +2,7 @@
 import tmi, { ChatUserstate, Client } from 'tmi.js';
 import bot_actions from './config/bot_actions.json';
 import { CommandDispatcher } from './models/CommandDispatcher';
-import { IMessageDisplay } from './models/IMessageDisplay';
+import { ImessageDisplayer } from './models/ImessageDisplayer';
 
 interface Action {
   actionName: string;
@@ -17,7 +17,7 @@ interface ConfigBot {
   debug?: boolean;
 }
 
-export default class BotTwitch implements IMessageDisplay {
+export default class BotTwitch implements ImessageDisplayer {
   private client: Client;
   private actions: Action[] = [];
   private mainRoom: string;

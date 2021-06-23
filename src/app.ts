@@ -7,7 +7,7 @@ import BotTwitch from './BotTwitch';
 import { Request, Response } from 'express';
 import { CommandDispatcher } from './models/CommandDispatcher';
 import { Command } from './models/Command';
-import { IMessageDisplay } from './models/IMessageDisplay';
+import { ImessageDisplayer } from './models/ImessageDisplayer';
 
 const serveur = new Server(config.server.port);
 const io = SocketsHolder.getInstance(serveur.http);
@@ -68,27 +68,27 @@ const commandDispatcherTwitch = new CommandDispatcher(botTwitch, "!");
 
 
 
-const commandCoucou = new Command("coucou", "", (messageDisplay) => {
-  messageDisplay.displayMessage("Hey mais salut toi !")
+const commandCoucou = new Command("coucou", "", (messageDisplayer) => {
+  messageDisplayer.displayMessage("Hey mais salut toi !")
 });
 
-const commandDiscord = new Command("discord", "donne le lien vers discord", (messageDisplay) => {
-  messageDisplay.displayMessage(`https://comptoirdudev.fr/discord
+const commandDiscord = new Command("discord", "donne le lien vers discord", (messageDisplayer) => {
+  messageDisplayer.displayMessage(`https://comptoirdudev.fr/discord
   Rejoignez nous !`)
 });
 
-const commandSocials = new Command("socials", "liste des réseaux sociaux", (messageDisplay) => {
-  messageDisplay.displayMessage(`Followez Nous ! 🐦 twitter.com/comptoirdudev_
+const commandSocials = new Command("socials", "liste des réseaux sociaux", (messageDisplayer) => {
+  messageDisplayer.displayMessage(`Followez Nous ! 🐦 twitter.com/comptoirdudev_
   Suivez Nous ! 🤝 https://www.linkedin.com/company/le-comptoir-du-dev
   Pour les replays ! ▶ comptoirdudev.fr/youtube
   La communauté ! 🖐 comptoirdudev.fr/discord`)
 });
 
-const commandGithub = new Command("github", "obtenir le lien vers le github du Comptoir du dev_", (messageDisplay) => {
-  messageDisplay.displayMessage("https://github.com/LeComptoirDuDev")
+const commandGithub = new Command("github", "obtenir le lien vers le github du Comptoir du dev_", (messageDisplayer) => {
+  messageDisplayer.displayMessage("https://github.com/LeComptoirDuDev")
 });
 
-const commandHelp = new Command("help", "Affiche les commandes disponibles", (messageDisplay) => {
+const commandHelp = new Command("help", "Affiche les commandes disponibles", (messageDisplayer) => {
   let message = commandDispatcherTwitch
     .commandList
     .filter(command => command.description)
@@ -96,7 +96,7 @@ const commandHelp = new Command("help", "Affiche les commandes disponibles", (me
       return acc += `!${command.name} - ${command.description}\n`
     }, "Liste des commandes : \n")
 
-  messageDisplay.displayMessage(message);
+  messageDisplayer.displayMessage(message);
 })
 
 commandDispatcherTwitch.add(commandCoucou);

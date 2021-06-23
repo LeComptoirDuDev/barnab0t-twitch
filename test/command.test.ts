@@ -1,6 +1,6 @@
 import { Command } from '../src/models/Command';
 import { CommandDispatcher } from '../src/models/CommandDispatcher';
-import { IMessageDisplay } from '../src/models/IMessageDisplay';
+import { ImessageDisplayer } from '../src/models/ImessageDisplayer';
 
 describe('Command', () => {
 
@@ -20,20 +20,20 @@ describe('Command Dispatcher without prefix', () => {
     let command1, command2: Command;
     let action1Result: number;
     let action2Result: number;
-    const messageDisplay: IMessageDisplay = {
+    const messageDisplayer: ImessageDisplayer = {
         displayMessage: (message, room) => { }
     }
 
     beforeEach(() => {
         action1Result = 0;
         action2Result = 0;
-        dispatcher = new CommandDispatcher(messageDisplay);
-        command1 = new Command('aze', '', (messageDisplay) => {
-            messageDisplay.displayMessage('aze');
+        dispatcher = new CommandDispatcher(messageDisplayer);
+        command1 = new Command('aze', '', (messageDisplayer) => {
+            messageDisplayer.displayMessage('aze');
             action1Result++
         })
-        command2 = new Command('azeaze', '', (messageDisplay) => {
-            messageDisplay.displayMessage('azeaze');
+        command2 = new Command('azeaze', '', (messageDisplayer) => {
+            messageDisplayer.displayMessage('azeaze');
             action2Result++
         })
     })
@@ -46,7 +46,7 @@ describe('Command Dispatcher without prefix', () => {
         dispatcher.add(command1);
         expect(dispatcher.commandsCount).toBe(1);
         dispatcher.add(command2);
-        const command3 = new Command('aze', '', (messageDisplay) => { })
+        const command3 = new Command('aze', '', (messageDisplayer) => { })
         expect(dispatcher.commandsCount).toBe(2);
         expect(() => {
             dispatcher.add(command3)
@@ -87,20 +87,20 @@ describe('Command Dispatcher with prefix', () => {
     let action1Result: number;
     let action2Result: number;
     const PREFIX = '!';
-    const messageDisplay: IMessageDisplay = {
+    const messageDisplayer: ImessageDisplayer = {
         displayMessage: (room, message) => { }
     }
 
     beforeEach(() => {
         action1Result = 0;
         action2Result = 0;
-        dispatcher = new CommandDispatcher(messageDisplay, PREFIX);
-        command1 = new Command('aze', '', (messageDisplay) => {
-            messageDisplay.displayMessage('Coucou c est aze');
+        dispatcher = new CommandDispatcher(messageDisplayer, PREFIX);
+        command1 = new Command('aze', '', (messageDisplayer) => {
+            messageDisplayer.displayMessage('Coucou c est aze');
             action1Result++
         })
-        command2 = new Command('azeaze', '', (messageDisplay) => {
-            messageDisplay.displayMessage('azeaze');
+        command2 = new Command('azeaze', '', (messageDisplayer) => {
+            messageDisplayer.displayMessage('azeaze');
             action2Result++
         })
     })

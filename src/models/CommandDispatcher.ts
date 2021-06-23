@@ -1,15 +1,15 @@
 import { Command } from "./Command";
-import { IMessageDisplay } from "./IMessageDisplay";
+import { ImessageDisplayer } from "./ImessageDisplayer";
 
 export class CommandDispatcher {
 
     private commands: Map<String, Command> = new Map();
     private prefix: string | undefined;
-    private messageDisplay: IMessageDisplay;
+    private messageDisplayer: ImessageDisplayer;
 
-    constructor(messageDisplay: IMessageDisplay, prefix?: string) {
+    constructor(messageDisplayer: ImessageDisplayer, prefix?: string) {
         if (prefix) this.prefix = prefix;
-        this.messageDisplay = messageDisplay;
+        this.messageDisplayer = messageDisplayer;
     }
 
     public get commandsCount() {
@@ -44,7 +44,7 @@ export class CommandDispatcher {
             return;
         }
 
-        this.commands.get(normalizedCommandName)?.action(this.messageDisplay);
+        this.commands.get(normalizedCommandName)?.action(this.messageDisplayer);
     }
 
     private normalizeCommandName(commandName: string) {
