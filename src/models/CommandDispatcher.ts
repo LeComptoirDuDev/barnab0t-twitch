@@ -27,24 +27,24 @@ export class CommandDispatcher {
         this.commands.set(this.normalizeCommandName(command.name), command);
     }
 
-    public handleMessage(message: string) {
+    public handleMessage(message: string, username: string) {
         if (!this.isCorrectlyFormattedCommandName(message)) {
             return;
         }
 
         const commandName = this.extractCommandName(message);
 
-        this.execute(commandName);
+        this.execute(commandName, username);
     }
 
-    private execute(commandName: string) {
+    private execute(commandName: string, username: string) {
         const normalizedCommandName = this.normalizeCommandName(commandName);
 
         if (!this.commands.has(normalizedCommandName)) {
             return;
         }
 
-        this.commands.get(normalizedCommandName)?.action(this.messageDisplay);
+        this.commands.get(normalizedCommandName)?.action(this.messageDisplay, username);
     }
 
     private normalizeCommandName(commandName: string) {

@@ -68,9 +68,15 @@ const commandDispatcherTwitch = new CommandDispatcher(botTwitch, "!");
 
 
 
-const commandCoucou = new Command("coucou", "", (messageDisplay) => {
-  messageDisplay.displayMessage("Hey mais salut toi !")
+const commandCoucou = new Command("coucou", "", (messageDisplay, username) => {
+  messageDisplay.displayMessage(`Hey mais salut @${username} !`)
 });
+
+const commandCoucouille = new Command("coucouille", "", (messageDisplay, username) => {
+  if (username !== "Encoore")
+    return;
+  messageDisplay.displayMessage(`Coucouille à toi aussi @${username}`);
+})
 
 const commandDiscord = new Command("discord", "donne le lien vers discord", (messageDisplay) => {
   messageDisplay.displayMessage(`https://comptoirdudev.fr/discord
@@ -104,6 +110,7 @@ commandDispatcherTwitch.add(commandDiscord);
 commandDispatcherTwitch.add(commandHelp);
 commandDispatcherTwitch.add(commandSocials);
 commandDispatcherTwitch.add(commandGithub);
+commandDispatcherTwitch.add(commandCoucouille);
 
 botTwitch.startListening(commandDispatcherTwitch);
 

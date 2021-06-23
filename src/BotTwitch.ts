@@ -52,7 +52,7 @@ export default class BotTwitch implements IMessageDisplay {
   public startListening(dispatcher: CommandDispatcher) {
     this.client.on('message', (channel, tags, message, self) => {
       if (self) return;
-      dispatcher.handleMessage(message);
+      dispatcher.handleMessage(message, tags['display-name'] || tags.username || '');
     });
   }
 
