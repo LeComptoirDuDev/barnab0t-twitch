@@ -1,71 +1,26 @@
-import Server from './Server';
-import SocketsHolder from './SocketsHolder';
-import QuestionsList from './QuestionsList';
-import { Question } from './models/Question.model';
-import config from './config/config.json';
-import BotTwitch from './BotTwitch';
-import { Request, Response } from 'express';
-import { CommandDispatcher } from './models/CommandDispatcher';
+import { accessToken, clientId } from './config/config_twurple.json';
+import { StaticAuthProvider } from '@twurple/auth';
+import { ApiClient } from '@twurple/api';
 import { Command } from './models/Command';
-import { IMessageDisplay } from './models/IMessageDisplay';
-
-const serveur = new Server(config.server.port);
-const io = SocketsHolder.getInstance(serveur.http);
+import { CommandDispatcher } from './models/CommandDispatcher';
+import BotTwitchTwurple from './BotTwitchTwurple';
 
 
-// serveur.addRouteGet('/actions', (req: Request, res: Response) => {
-//   res.send(JSON.stringify(bot.getActions().map(a => a.actionName)));
-// });
+const authTwurpleProvider = new StaticAuthProvider(
+  clientId,
+  accessToken
+);
 
-serveur.addRouteGet('/overlay-question/:position?', (req: Request, res: Response) => {
-  res.render('overlay_question.ejs', {
-    position: req.params.position || 'bottom',
-  });
-});
-
-serveur.addRouteGet('/flush', (req: Request, res: Response) => {
-  QuestionsList.flush();
-  res.send('done.');
-});
-
-// serveur.addRouteGet('/action/:actionName', (req: Request, res: Response) => {
-//   bot.doAction(req.params.actionName);
-//   res.send('done.');
-// });
-
-io.onConnection((socket) => {
-  socket.emit('UpdateListeQuestion', QuestionsList.getQuestionsList());
-  socket.emit('UpdateQuestionActive', QuestionsList.getActiveQuestion());
-});
-
-/// Events from remote
-io.onEvent('addQuestion', (question: Question) => {
-  QuestionsList.addQuestion(question);
-});
-io.onEvent('displayQuestion', (question: Question) => {
-  QuestionsList.setActiveQuestion(question.id);
-});
-io.onEvent('hideQuestion', () => {
-  QuestionsList.setActiveQuestion(QuestionsList.DESACTIVATE_ALL);
-});
-
-/// Events from store
-QuestionsList.subscribeListUpdate((liste) => {
-  io.emit('UpdateListeQuestion', liste);
-});
-QuestionsList.subscribeActive((question) => {
-  io.emit('UpdateQuestionActive', question);
-});
+const apiClient = new ApiClient({ authProvider: authTwurpleProvider });
+apiClient.users.getUserByName('LeComptoirDuDev_').then((payload) => console.log(payload));
 
 
 
-/// Register commands for twitch
 
-const botTwitch = new BotTwitch(config.botTwitch);
+const botTwitch = new BotTwitchTwurple(authTwurpleProvider, "LeComptoirDuDev_")
 
 
 const commandDispatcherTwitch = new CommandDispatcher(botTwitch, "!");
-
 
 
 const commandCoucou = new Command("coucou", "", (messageDisplay, username) => {
@@ -94,6 +49,13 @@ const commandGithub = new Command("github", "obtenir le lien vers le github du C
   messageDisplay.displayMessage("https://github.com/LeComptoirDuDev")
 });
 
+const commandTeam = new Command("team", "obtenir des infos sur les tenanciers du Comptoir !", (messageDisplay) => {
+  messageDisplay.displayMessage(`Pierre: dev full stack
+  Virgil: dev front
+  Sylvain : chef de projet mais technique
+  `);
+})
+
 const commandHelp = new Command("help", "Affiche les commandes disponibles", (messageDisplay) => {
   let message = commandDispatcherTwitch
     .commandList
@@ -111,6 +73,7 @@ commandDispatcherTwitch.add(commandHelp);
 commandDispatcherTwitch.add(commandSocials);
 commandDispatcherTwitch.add(commandGithub);
 commandDispatcherTwitch.add(commandCoucouille);
+commandDispatcherTwitch.add(commandTeam);
 
 botTwitch.startListening(commandDispatcherTwitch);
 
@@ -148,4 +111,4 @@ botTwitch.startListening(commandDispatcherTwitch);
 
 /// Start server and enjoy !
 
-serveur.start();
+// serveur.start();
